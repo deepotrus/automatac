@@ -1,15 +1,14 @@
-# WebSocket Client in C — Learning Progress
+# WebSocket Client in C
 This is a WebSocket client in C using libwebsockets that connects to the Bitget exchange
 public API, subscribes to order book data, handles fragmented messages, maintains
 the connection with application-level ping/pong, and reconnects automatically on failure.
 
 ## Build and Run
-bash
+```bash
 $ sudo apt install libwebsockets-dev libcjson-dev
 $ gcc wsclient.c -lwebsockets -lcjson -o wsclient
 $ ./wsclient
-## Features Implemented
-
+```
 ### Application-level ping/pong
 - Send raw "ping" string every 30 seconds via LWS_CALLBACK_TIMER
 - Detect "pong" in LWS_CALLBACK_CLIENT_RECEIVE with strncmp (not null-terminated!)
@@ -28,7 +27,6 @@ $ ./wsclient
 - Incoming: cJSON_ParseWithLength() — respects length, safe for non-null-terminated buffers
 - Always cJSON_Delete() after use
 - Use strncmp / %.*s everywhere since in is never null-terminated
-- Message types are mutually exclusive — use else if to dispatch: event vs action
 
 ### Message fragmentation recomposition
 - Large messages (400-level order book snapshots) arrive in multiple chunks
